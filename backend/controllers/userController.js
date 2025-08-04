@@ -52,6 +52,44 @@ const sendOTP = async (req, res) => {
 };
 
 
+//API to verify the OTP
+// API to verify OTP
+const verifyOTP = async (req, res) => {
+    try {
+        const { email, otp } = req.body;
+
+        if (!email || !otp) {
+        return res.json({ success: false, message: "Email and OTP required" });
+        }
+
+        const otpRecord = await otpModel.findOne({ email });
+
+        if (!otpRecord) {
+        return res.json({ success: false, message: "No OTP found" });
+        }
+
+        // Normalize both OTPs to string and trim
+        const dbOtp = otpRecord.otp?.toString().trim();
+        const enteredOtp = otp.toString().trim();
+
+        if (dbOtp !== enteredOtp) {
+        return res.json({ success: false, message: "Invalid OTP" });
+        }
+
+        if (new Date(otpRecord.otp_expiry) < new Date()) {
+        return res.json({ success: false, message: "OTP expired" });
+        }
+
+        res.json({ success: true, message: "OTP verified" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+
+
+
 
 // API to register user 
 const registerUser = async (req, res) => {
@@ -61,9 +99,19 @@ const registerUser = async (req, res) => {
         // Check OTP match
         const otpRecord = await otpModel.findOne({ email });
 
-        if (!otpRecord || otpRecord.otp !== otp || new Date(otpRecord.otp_expiry) < new Date()) {
-        return res.json({ success: false, message: "Invalid or expired OTP" });
+        if (!otpRecord) {
+        return res.json({ success: false, message: "OTP not found" });
         }
+
+        if (String(otpRecord.otp).trim() !== String(otp).trim()) {
+        return res.json({ success: false, message: "Incorrect OTP" });
+        }
+
+        if (new Date(otpRecord.otp_expiry) < new Date()) {
+        return res.json({ success: false, message: "OTP expired" });
+        }
+
+
 
         // Optional: Delete used OTP
         await otpModel.deleteOne({ _id: otpRecord._id });
@@ -189,9 +237,10 @@ const resetPassword = async (req, res) => {
 
         const otpRecord = await otpModel.findOne({ email });
 
-        if (!otpRecord || otpRecord.otp !== otp || new Date(otpRecord.otp_expiry) < new Date()) {
-        return res.json({ success: false, message: "Invalid or expired OTP" });
+        if ( !otpRecord || String(otpRecord.otp) !== String(otp) || new Date(otpRecord.otp_expiry) < new Date()) {
+            return res.json({ success: false, message: "Invalid or expired OTP" });
         }
+
 
         const hashedPassword = await bcrypt.hash(newPassword, 10);
 
@@ -396,6 +445,7 @@ export {
     sendOTP,
     registerUser,
     loginUser,
+    verifyOTP,
     sendForgotOTP,
     resetPassword,
     getProfile,

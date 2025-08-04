@@ -1,5 +1,5 @@
 import express from 'express'
-import { sendOTP, registerUser, loginUser, sendForgotOTP, resetPassword, getProfile, updateProfile, bookAppointment, getMyAppointments, cancelAppointment} from '../controllers/userController.js'
+import { sendOTP, registerUser, loginUser, verifyOTP, sendForgotOTP, resetPassword, getProfile, updateProfile, bookAppointment, getMyAppointments, cancelAppointment} from '../controllers/userController.js'
 import authUser from '../middlewares/authUser.js'
 import upload from '../middlewares/multer.js'
 
@@ -8,6 +8,7 @@ const userRouter = express.Router()
 userRouter.post('/send-otp', sendOTP)
 userRouter.post('/register', registerUser)
 userRouter.post('/login', loginUser)
+userRouter.post('/verify-otp', verifyOTP);
 userRouter.post('/send-forgot-otp', sendForgotOTP)
 userRouter.post('/reset-password', resetPassword)
 
