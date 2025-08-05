@@ -5,42 +5,42 @@ import doctorModel from '../models/doctorModel.js';
 import jwt from 'jsonwebtoken'
 import appointmentModel from '../models/appointmentModel.js';
 import userModel from '../models/userModel.js';
+import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+import { getDoctorWelcomeEmail } from '../utils/doctorEmailTemplate.js';
+
+dotenv.config();
 
 
 //API for adding doctor
-const addDoctor = async (req,res) => {
+const addDoctor = async (req, res) => {
     try {
-
-        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body
+        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
         const imageFile = req.file;
 
-        // Check for image file
         if (!imageFile) {
             return res.status(400).json({ success: false, message: "Image file is required" });
         }
 
-        //checking for all data to add doctor
         if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
-            return res.json({success:false,message:"Missing Details"})
+            return res.json({ success: false, message: "Missing Details" });
         }
 
-        // validating email formate
         if (!validator.isEmail(email)) {
-            return res.json({success:false,message:"Please enter a valid email"})
+            return res.json({ success: false, message: "Please enter a valid email" });
         }
 
-        //validating strong password
         if (password.length < 8) {
-            return res.json({success:false,message:"Please enter a strong password"})
+            return res.json({ success: false, message: "Please enter a strong password" });
         }
 
-        // hashing doctor password
-        const salt = await bcrypt.genSalt(10)
-        const hashedPassword = await bcrypt.hash(password, salt)
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
 
-        // upload image to cloudinary
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type:"image"})
-        const imageUrl = imageUpload.secure_url
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+        const imageUrl = imageUpload.secure_url;
+
+        const parsedAddress = JSON.parse(address);
 
         const doctorData = {
             name,
@@ -52,20 +52,42 @@ const addDoctor = async (req,res) => {
             experience,
             about,
             fees,
-            address: JSON.parse(address),
-            date:Date.now()
-        }
-    
-        const newDoctor = new doctorModel(doctorData)
-        await newDoctor.save()
+            address: parsedAddress,
+            date: Date.now()
+        };
 
-        res.json({success:true,message:"Doctor Added"})
-    
+        const newDoctor = new doctorModel(doctorData);
+        await newDoctor.save();
+
+        // Prepare and send email
+        const transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+                user: process.env.EMAIL,
+                pass: process.env.EMAIL_PASSWORD,
+            },
+        });
+
+        const { subject, html } = getDoctorWelcomeEmail({ ...doctorData, address: parsedAddress }, password);
+
+        const mailOptions = {
+            from: `"Admin Portal-DocDirect" <${process.env.EMAIL}>`,
+            to: email,
+            subject,
+            html
+        };
+
+        await transporter.sendMail(mailOptions);
+
+        res.json({ success: true, message: "Doctor Added and Email Sent" });
+
     } catch (error) {
-        console.log(error)
-        res.json({success:false,message:error.message})
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
-}
+};
+
+
 
 //API for admin login
 const loginAdmin = async (req, res) => {

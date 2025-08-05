@@ -90,6 +90,7 @@ const DoctorContextProvider = (props) => {
         try {
 
             const { data } = await axios.get(backendUrl + '/api/doctor/profile', { headers: { dToken } })
+
             if (data.success) {
                 setProfileData(data.profileData)
                 console.log(data.profileData);
@@ -105,15 +106,18 @@ const DoctorContextProvider = (props) => {
 
 
 
-    const value = {
-        dToken, setDToken,
-        backendUrl,
-        appointments, setAppointments,
-        getAppointments,
-        completeAppointment, cancelAppointment,
-        dashData, setDashData, getDashData,
-        profileData, setProfileData, getProfileData
-    }
+
+
+const value = {
+    dToken, setDToken,
+    backendUrl,
+    appointments, setAppointments,
+    getAppointments,
+    completeAppointment, cancelAppointment,
+    dashData, setDashData, getDashData,
+    profileData, setProfileData, getProfileData,
+};
+
 
     return (
         <DoctorContext.Provider value={value}>

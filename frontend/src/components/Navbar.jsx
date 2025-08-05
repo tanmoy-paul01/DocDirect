@@ -40,11 +40,11 @@ const Navbar = () => {
                     <hr className='border-none outline-none h-0.5 bg-color2 w-3/5 m-auto hidden' />
                 </NavLink>
             </ul>
-            <div className='flex items-center gap-4'>
+            <div className='flex items-center '>
                 {
                     token && userData
                         ? <div className='flex items-center gap-2 cursor-pointer group relative'>
-                            <img className='w-11 rounded-full' src={userData.image} alt="" />
+                            <img className='w-11 mr-4 rounded-full' src={userData.image} alt="" />
                             {/* <img className='w-2.5' src={assets.dropdown_icon} alt="" /> */}
                             <div className='absolute top-0 right-0 pt-14 text-base font-medium text-gray-600 z-20 hidden group-hover:block'>
                                 <div className='min-w-48 bg-color4 rounded flex flex-col gap-4 p-4'>
@@ -54,7 +54,7 @@ const Navbar = () => {
                                 </div>
                             </div>
                     </div>
-                    :<button onClick={()=>navigate('/login')} className='bg-color2 text-black px-5 py-3 rounded-full font-medium hover:bg-color3 transition-all duration-300'>Create account</button>
+                    :<button onClick={()=>navigate('/login')} className='bg-color2 text-black mr-4 px-5 py-3 rounded-full font-medium hover:bg-color3 transition-all duration-300'>Create account</button>
                 }
                 <img onClick={()=> setShowMenu(true)} className='w-6 md:hidden cursor-pointer' src={assets.menu_icon} alt="" />
                 

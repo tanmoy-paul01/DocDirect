@@ -115,155 +115,163 @@ const verifyOTPHandler = async () => {
   }
 
   return (
-    <div className='w-full min-h-[80vh] flex items-center justify-center p-4'>
-      <form onSubmit={onSubmitHandler} className='w-full max-w-md border p-4 rounded shadow space-y-4'>
+  <div className='w-full min-h-[80vh] flex items-center justify-center p-4'>
+    <form onSubmit={onSubmitHandler} className='w-full max-w-md border p-4 rounded shadow space-y-4'>
 
-        <h2 className='text-2xl font-bold text-center'>
-          {state === 'Login' ? 'Login' : `Sign Up - Step ${step}`}
-        </h2>
+      <h2 className='text-2xl font-bold text-center'>
+        {state === 'Login' ? 'Login' : `Sign Up - Step ${step}`}
+      </h2>
 
-        {state === 'Login' && (
-          <>
-            <div>
-              <label>Email</label>
-              <input
-                type='text'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Password</label>
-              <input
-                type='password'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div className="text-sm">
-              <span
-                className="text-color2 cursor-pointer hover:underline"
-                onClick={() => navigate('/forgot-password')}
-              >
-                Forgot Password?
-              </span>
-            </div>
-          </>
-        )}
-
-        {/* Sign Up Step 1 */}
-        {state === 'Sign Up' && step === 1 && (
-          <>
-            <div>
-              <label>Name</label>
-              <input
-                type='text'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Your Name'
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Email</label>
-              <input
-                type='text'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Email'
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
-              />
-            </div>
-            <button
-              type='button'
-              onClick={sendOTPHandler}
-              className='bg-color2 text-black text-sm font-medium px-5 py-3 mt-3 rounded hover:bg-color3 transition-all duration-300 w-full'
+      {/* Login Form */}
+      {state === 'Login' && (
+        <>
+          <div>
+            <label>Email</label>
+            <input
+              type='text'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Password</label>
+            <input
+              type='password'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div className="text-sm">
+            <span
+              className="text-color2 cursor-pointer hover:underline"
+              onClick={() => navigate('/forgot-password')}
             >
-              Send OTP
-            </button>
-          </>
-        )}
-
-        {/* Sign Up Step 2 */}
-        {state === 'Sign Up' && step === 2 && (
-          <>
-            <div>
-              <label>Enter OTP</label>
-              <input
-                type='text'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Enter OTP'
-                value={otp}
-                onChange={(e) => setOtp(e.target.value)}
-              />
-            </div>
-            <button
-              type='button'
-              onClick={verifyOTPHandler}
-              className='bg-color2 text-black text-sm font-medium px-5 py-3 mt-3 rounded hover:bg-color3 transition-all duration-300 w-full'
-            >
-              Verify OTP
-            </button>
-          </>
-        )}
-
-        {/* Sign Up Step 3 */}
-        {state === 'Sign Up' && step === 3 && (
-          <>
-            <div>
-              <label>Password</label>
-              <input
-                type='password'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Password'
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-              />
-            </div>
-            <div>
-              <label>Confirm Password</label>
-              <input
-                type='password'
-                className='w-full border rounded p-2 mt-1'
-                placeholder='Confirm Password'
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-              />
-            </div>
-            <button
-              type='submit'
-              className='bg-color2 text-black w-full text-sm font-medium py-3 rounded hover:bg-color3 transition-all duration-300'
-            >
-              Register
-            </button>
-          </>
-        )}
-
-        <p className='text-center text-sm'>
-          {state === 'Login' ? "Don't have an account?" : 'Already have an account?'}{' '}
-          <span
-            className='text-color2 cursor-pointer hover:underline'
-            onClick={() => {
-              setState(state === 'Login' ? 'Sign Up' : 'Login')
-              setStep(1)
-              setName('')
-              setEmail('')
-              setPassword('')
-              setConfirmPassword('')
-              setOtp('')
-              window.scrollTo({ top: 0, behavior: 'smooth' })
-            }}
+              Forgot Password?
+            </span>
+          </div>
+          <button
+            type='submit'
+            className='bg-color2 text-black w-full text-sm font-medium py-3 rounded hover:bg-color3 transition-all duration-300'
           >
-            {state === 'Login' ? 'Sign Up' : 'Login'}
-          </span>
-        </p>
-      </form>
-    </div>
-  )
+            Login
+          </button>
+        </>
+      )}
+
+      {/* Sign Up Step 1 */}
+      {state === 'Sign Up' && step === 1 && (
+        <>
+          <div>
+            <label>Name</label>
+            <input
+              type='text'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Your Name'
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Email</label>
+            <input
+              type='text'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Email'
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+          </div>
+          <button
+            type='button'
+            onClick={sendOTPHandler}
+            className='bg-color2 text-black text-sm font-medium px-5 py-3 mt-3 rounded hover:bg-color3 transition-all duration-300 w-full'
+          >
+            Send OTP
+          </button>
+        </>
+      )}
+
+      {/* Sign Up Step 2 */}
+      {state === 'Sign Up' && step === 2 && (
+        <>
+          <div>
+            <label>Enter OTP</label>
+            <input
+              type='text'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Enter OTP'
+              value={otp}
+              onChange={(e) => setOtp(e.target.value)}
+            />
+          </div>
+          <button
+            type='button'
+            onClick={verifyOTPHandler}
+            className='bg-color2 text-black text-sm font-medium px-5 py-3 mt-3 rounded hover:bg-color3 transition-all duration-300 w-full'
+          >
+            Verify OTP
+          </button>
+        </>
+      )}
+
+      {/* Sign Up Step 3 */}
+      {state === 'Sign Up' && step === 3 && (
+        <>
+          <div>
+            <label>Password</label>
+            <input
+              type='password'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Password'
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </div>
+          <div>
+            <label>Confirm Password</label>
+            <input
+              type='password'
+              className='w-full border rounded p-2 mt-1'
+              placeholder='Confirm Password'
+              value={confirmPassword}
+              onChange={(e) => setConfirmPassword(e.target.value)}
+            />
+          </div>
+          <button
+            type='submit'
+            className='bg-color2 text-black w-full text-sm font-medium py-3 rounded hover:bg-color3 transition-all duration-300'
+          >
+            Register
+          </button>
+        </>
+      )}
+
+      <p className='text-center text-sm'>
+        {state === 'Login' ? "Don't have an account?" : 'Already have an account?'}{' '}
+        <span
+          className='text-color2 cursor-pointer hover:underline'
+          onClick={() => {
+            setState(state === 'Login' ? 'Sign Up' : 'Login')
+            setStep(1)
+            setName('')
+            setEmail('')
+            setPassword('')
+            setConfirmPassword('')
+            setOtp('')
+            window.scrollTo({ top: 0, behavior: 'smooth' })
+          }}
+        >
+          {state === 'Login' ? 'Sign Up' : 'Login'}
+        </span>
+      </p>
+    </form>
+  </div>
+)
+
 }
 
 export default Login

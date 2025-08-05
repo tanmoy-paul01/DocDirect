@@ -14,6 +14,9 @@ import DoctorDashboard from './pages/Doctor/DoctorDashboard';
 import DoctorAppointments from './pages/Doctor/DoctorAppointments';
 import DoctorProfile from './pages/Doctor/DoctorProfile';
 
+import ProtectedRoute from './components/ProtectedRoute'
+
+
 const App = () => {
 
   const { aToken } = useContext(AdminContext)
@@ -26,18 +29,46 @@ const App = () => {
       <div className='flex items-start'>
         <Sidebar />
         <Routes>
-          {/* Admin Route */}
-          <Route path='/' element={<></>} />
-          <Route path='/admin-dashboard' element={<Dashboard />} />
-          <Route path='/all-appointments' element={<AllAppointments />}abcd />
-          <Route path='/add-doctor' element={<AddDoctor />} />
-          <Route path='/doctor-list' element={<DoctorsList />} />
+  {/* Admin Routes */}
+  <Route path='/admin-dashboard' element={
+    <ProtectedRoute token={aToken}>
+      <Dashboard />
+    </ProtectedRoute>
+  } />
+  <Route path='/all-appointments' element={
+    <ProtectedRoute token={aToken}>
+      <AllAppointments />
+    </ProtectedRoute>
+  } />
+  <Route path='/add-doctor' element={
+    <ProtectedRoute token={aToken}>
+      <AddDoctor />
+    </ProtectedRoute>
+  } />
+  <Route path='/doctor-list' element={
+    <ProtectedRoute token={aToken}>
+      <DoctorsList />
+    </ProtectedRoute>
+  } />
 
-          {/* Doctor Route */}
-          <Route path='/doctor-dashboard' element={<DoctorDashboard />} />
-          <Route path='/doctor-appointments' element={<DoctorAppointments />} />
-          <Route path='/doctor-profile' element={<DoctorProfile />} />
-        </Routes>
+  {/* Doctor Routes */}
+  <Route path='/doctor-dashboard' element={
+    <ProtectedRoute token={dToken}>
+      <DoctorDashboard />
+    </ProtectedRoute>
+  } />
+  <Route path='/doctor-appointments' element={
+    <ProtectedRoute token={dToken}>
+      <DoctorAppointments />
+    </ProtectedRoute>
+  } />
+  <Route path='/doctor-profile' element={
+    <ProtectedRoute token={dToken}>
+      <DoctorProfile />
+    </ProtectedRoute>
+  } />
+</Routes>
+
       </div>
     </div>
   ) : (

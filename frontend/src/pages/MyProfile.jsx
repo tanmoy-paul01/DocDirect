@@ -14,38 +14,50 @@ const MyProfile = () => {
   const [image, setImage] = useState(false)
   
   const updateUserProfileData = async () => {
-    try {
-      const formData = new FormData()
+  try {
+    // 🛑 Validate phone number (only digits allowed)
+    const phoneRegex = /^\d{10}$/;
 
-      formData.append('name', userData.name)
-      formData.append('email', userData.email)
-      formData.append('phone', userData.phone)
-      formData.append('address', JSON.stringify(userData.address))
-      formData.append('gender', userData.gender)
-      formData.append('dob', userData.dob)
-
-      image && formData.append('image', image)
-      for (let [key, value] of formData.entries()) {
-  console.log(key, value);
-}
-      
-      const { data } = await axios.post(backendUrl + '/api/user/update-profile', formData, { headers: { token } })
-      
-      if (data.success) {
-        toast.success(data.message)
-        await loadUserProfileData()
-        setIsEdit(false)
-        setImage(false)
-
-      } else {
-        toast.error(data.message)
-      }
-
-    } catch (error) {
-      console.log(error)
-      toast.error(error.message)
+    if (!phoneRegex.test(userData.phone)) {
+      toast.error("Phone number must be exactly 10 digits");
+      return;
     }
+
+    const formData = new FormData();
+    formData.append('name', userData.name);
+    formData.append('email', userData.email);
+    formData.append('phone', userData.phone);
+    formData.append('address', JSON.stringify(userData.address));
+    formData.append('gender', userData.gender);
+    formData.append('dob', userData.dob);
+
+    if (image) formData.append('image', image);
+
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
+
+    const { data } = await axios.post(
+      backendUrl + '/api/user/update-profile',
+      formData,
+      { headers: { token } }
+    );
+
+    if (data.success) {
+      toast.success(data.message);
+      await loadUserProfileData();
+      setIsEdit(false);
+      setImage(false);
+    } else {
+      toast.error(data.message);
+    }
+
+  } catch (error) {
+    console.error(error);
+    toast.error(error.message || "Something went wrong");
   }
+};
+
 
   return userData && (
     <div className='max-w-lg flex flex-col gap-2 text-sm'>
@@ -55,7 +67,7 @@ const MyProfile = () => {
           ? <label htmlFor="image">
             <div className='inline-block relative cursor-pointer'>
               <img className='w-36 rounded opacity-75' src={image ? URL.createObjectURL(image) : userData.image} alt="" />
-              <img className='w-10 absolute bottom-12 right-12' src={image ? '' : assets.upload_icon} alt="" />
+              {/* <img className='w-10 absolute bottom-12 right-12' src={image ? '' : assets.upload_icon} alt="" /> */}
             </div>
             <input onChange={(e)=>setImage(e.target.files[0])} type="file" id="image" hidden/>
           </label>
@@ -77,22 +89,22 @@ const MyProfile = () => {
           <p className='font-medium'>Email id:</p>
           {
             isEdit
-              ? <input className='bg-gray-100 max-w-52' type='text' value={userData.email} onChange={e => setUserData(prev => ({ ...prev, email: e.target.value }))}></input>
+              ? <input className='bg-gray-100 max-w-52 px-2' type= 'email' value={userData.email} onChange={e => setUserData(prev => ({ ...prev, email: e.target.value }))}></input>
               : <p className='text-color1'>{userData.email}</p>
           }
           <p className='font-medium'>Phone:</p>
           {
             isEdit
-              ? <input className='bg-gray-100 max-w-52' type='text' value={userData.phone} onChange={e => setUserData(prev => ({ ...prev, phone: e.target.value }))}></input>
+              ? <input className='bg-gray-100 max-w-52 px-2'  type='text'  value={userData.phone}  onChange={(e) => {const val = e.target.value; if (/^\d{0,10}$/.test(val)) {setUserData(prev => ({ ...prev, phone: val }));}}}/>
               : <p className='text-color1'>{userData.phone}</p>
           }
           <p className='font-medium'>Address:</p>
           {
             isEdit
               ? <p>
-                <input className='bg-gray-100' type="text" value={userData.address.line1} onChange={e => setUserData(prev => ({...prev, address: {...prev.address, line1: e.target.value}}))} />
+                <input className='bg-gray-100 px-2' type="text" value={userData.address.line1} onChange={e => setUserData(prev => ({...prev, address: {...prev.address, line1: e.target.value}}))} />
                 <br />
-                <input className='bg-gray-100' type="text" value={userData.address.line2} onChange={e => setUserData(prev => ({...prev, address: {...prev.address, line2: e.target.value}}))} />
+                <input className='bg-gray-100 px-2' type="text" value={userData.address.line2} onChange={e => setUserData(prev => ({...prev, address: {...prev.address, line2: e.target.value}}))} />
               </p>
               : <p className='text-gray-500'>
                 {userData.address.line1}
@@ -110,7 +122,8 @@ const MyProfile = () => {
           <p className='font-medium'>Gender:</p>
           {
             isEdit 
-              ? <select className='max-w-20 bg-gray-100' onChange={(e) => setUserData(prev => ({...prev, gender: e.target.value}))} value={userData.gender}>
+              ? <select className='max-w-20 bg-gray-100 ' onChange={(e) => setUserData(prev => ({ ...prev, gender: e.target.value }))} value={userData.gender || ''}>
+                <option value="" disabled>Select</option>
                 <option value="Male">Male</option>
                 <option value="Female">Female</option>
               </select>

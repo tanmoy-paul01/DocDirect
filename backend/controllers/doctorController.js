@@ -5,6 +5,7 @@ import appointmentModel from "../models/appointmentModel.js"
 
 
 
+
 const changeAvailablity = async (req,res) => {
     try {
         
@@ -188,13 +189,17 @@ const updateDoctorProfile = async (req, res) => {
         
         await doctorModel.findByIdAndUpdate(docId, { fees, address, available })
         
-        res.json({success:true,message:'profile updated'})
+        res.json({ success: true, message: 'profile updated' })
         
     } catch (error) {
         console.log(error)
-        res.json({success:false,message:error.message})
+        res.json({ success: false, message: error.message })
     }
-}
+};
+
+
+
+
 
 
 
@@ -207,5 +212,5 @@ export {
     appointmentCancel,
     doctorDashboard,
     doctorProfile,
-    updateDoctorProfile
+    updateDoctorProfile,
 }
