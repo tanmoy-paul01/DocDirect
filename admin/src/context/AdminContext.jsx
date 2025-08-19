@@ -12,6 +12,7 @@ const AdminContextProvider = (props) => {
     const [dashData, setDashData] = useState(false)
 
     const backendUrl = 'https://docdirect-jy7s.onrender.com'
+    // const backendUrl = 'http://localhost:5173/login'
 
     const getAllDoctors = async () => {
         try {

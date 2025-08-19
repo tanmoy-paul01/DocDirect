@@ -18,7 +18,7 @@ const sendOTP = async (req, res) => {
     const { email } = req.body;
 
     if (!email) {
-        return res.json({ success: false, message: "Email or phone required" });
+        return res.json({ success: false, message: "Email required" });
     }
 
     const existingUser = await userModel.findOne({ email });
@@ -44,7 +44,7 @@ const sendOTP = async (req, res) => {
     );
 
 
-    res.json({ success: true, message: `OTP sent to ${email || phone}` });
+    res.json({ success: true, message: `OTP sent to ${email}` });
     } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
@@ -170,9 +170,10 @@ const loginUser = async (req, res) => {
 
         if ( !/^\d{10}$/.test(identifier)) {
             user = await userModel.findOne({ email: identifier });
-        } else {
-            user = await userModel.findOne({ phone: identifier });
         }
+        // else {
+        //     user = await userModel.findOne({ phone: identifier });
+        // }
 
         if (!user) {
             return res.json({ success: false, message: "User does not exist" });
