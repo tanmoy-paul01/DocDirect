@@ -1,11 +1,11 @@
 
-# DocDirect
+# 🚀 DocDirect
 
 **DocDirect** is a doctor-patient appointment booking system built with the MERN stack and Tailwind CSS. It simplifies scheduling by offering secure authentication, image uploads, and email notifications.
 
 ---
 
-## Live Demo
+## 🔗 Live Demo
 
 Access the live deployed version here: **[DocDirect Demo](https://docdirect-frontend.onrender.com)**.
 
@@ -13,7 +13,7 @@ Access the live deployed version here: **[DocDirect Demo](https://docdirect-fron
 
 ---
 
-## Features
+## 🚀 Features
 
 - Role-based access (doctor vs patient)
 - Secure login with JWT, password hashing via bcrypt
@@ -36,7 +36,7 @@ Access the live deployed version here: **[DocDirect Demo](https://docdirect-fron
 
 ---
 
-## File Structure
+## 📂 File Structure
 
 The project follows a clean and modular MERN structure:
 
@@ -135,16 +135,16 @@ DocDirect/
 
 ---
 
-## Deployment
+## 🌐 Deployment
 
 - Deployed on **Render**
 - Live URL: `https://docdirect-frontend.onrender.com`
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-### Backend Setup
+### 🛠️ Backend Setup
 
 ```bash
 cd backend
@@ -168,7 +168,7 @@ Run:
 npm start
 ```
 
-### Frontend Setup
+### 🛠️ Frontend Setup
 
 ```bash
 cd ../frontend
@@ -182,7 +182,7 @@ npm start
 
 ---
 
-## API Endpoints
+## 🔗 API Endpoints
 
 | Route                | Method | Description                        |
 |---------------------|--------|------------------------------------|
@@ -193,19 +193,19 @@ npm start
 
 ---
 
-## Contributing
+## 🤝 Contributing
 
 Contributions are welcome!
 
 ---
 
-## License
+## 📄 License
 
 This project is licensed under the MIT License
 
 ---
 
-## Contact
+## 🧑‍💻 Contact
 
 For questions, suggestions, or issues, contact **Tanmoy Paul** or open an issue in the repo.
 
