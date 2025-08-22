@@ -138,7 +138,7 @@ DocDirect/
 ## 🌐 Deployment
 
 - Deployed on **Render**
-- Live URL: `https://docdirect-frontend.onrender.com`
+- Live URL: https://docdirect-frontend.onrender.com
 
 ---
 
